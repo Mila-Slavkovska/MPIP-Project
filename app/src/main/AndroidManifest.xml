@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,9 +15,12 @@
         android:theme="@style/Theme.MPIP"
         tools:targetApi="31" >
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.MPIP"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/Theme.MPIP" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,14 +29,8 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/Theme.MPIP"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MPIP" >
-        </activity>
+            android:exported="false"
+            android:theme="@style/Theme.MPIP" />
     </application>
 
 </manifest>

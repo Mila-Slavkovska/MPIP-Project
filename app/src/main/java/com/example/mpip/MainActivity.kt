@@ -1,47 +1,50 @@
 package com.example.mpip
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.mpip.ui.theme.MPIPTheme
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth;
+    private var user: FirebaseUser? = null;
+
+    private fun goToLogin() {
+        val intent = Intent(applicationContext, LoginActivity::class.java);
+        startActivity(intent);
+        finish();
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            MPIPTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+        auth = FirebaseAuth.getInstance();
+        user = auth.currentUser;
+        val button: Button = findViewById(R.id.logout);
+        val textView: TextView = findViewById(R.id.user_details);
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MPIPTheme {
-        Greeting("Android")
+        if(user == null){
+            goToLogin();
+        } else {
+            textView.text = user!!.email;
+        }
+
+        button.setOnClickListener {
+            FirebaseAuth.getInstance().signOut();
+            goToLogin();
+        }
     }
 }
