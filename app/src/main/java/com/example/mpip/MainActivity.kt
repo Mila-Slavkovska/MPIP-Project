@@ -214,6 +214,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivityFlow", "Error loading pet data", e)
             Toast.makeText(this, "Error loading pet: ${e.message}", Toast.LENGTH_LONG).show()
         }
+
     }
 
     private fun feedPet() {
