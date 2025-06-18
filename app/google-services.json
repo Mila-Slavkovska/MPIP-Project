@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "762746105202",
+    "project_id": "mpip-project-ea779",
+    "storage_bucket": "mpip-project-ea779.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762746105202:android:3471d8efe41b1bbc30c1eb",
+        "android_client_info": {
+          "package_name": "com.example.mpip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmeJhMKDxRmGkCrIi0-SV6I92s7cR4vUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,24 +2,13 @@ package com.example.mpip
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth;
-    private var user: FirebaseUser? = null;
-
-    private fun goToLogin() {
-        val intent = Intent(applicationContext, LoginActivity::class.java);
-        startActivity(intent);
-        finish();
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,20 +20,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        auth = FirebaseAuth.getInstance();
-        user = auth.currentUser;
-        val button: Button = findViewById(R.id.logout);
-        val textView: TextView = findViewById(R.id.user_details);
+        val userProfileBtn: ImageButton = findViewById(R.id.user_profile)
 
-        if(user == null){
-            goToLogin();
-        } else {
-            textView.text = user!!.email;
-        }
-
-        button.setOnClickListener {
-            FirebaseAuth.getInstance().signOut();
-            goToLogin();
+        userProfileBtn.setOnClickListener {
+            val intent = Intent(applicationContext, UserProfileActivity::class.java)
+            startActivity(intent)
+//            finish()
         }
     }
 }

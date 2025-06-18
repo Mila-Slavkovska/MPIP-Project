@@ -8,4 +8,7 @@
     <string name="click_to_login">Already a user? Login.</string>
     <string name="click_to_register">Click to register</string>
     <string name="logout">Logout</string>
+    <string name="username">Username</string>
+    <string name="fetching_user_data">Fetching user data...</string>
+    <string name="user_profile">User Profile</string>
 </resources>
