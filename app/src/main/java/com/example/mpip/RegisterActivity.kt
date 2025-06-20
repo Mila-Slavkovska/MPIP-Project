@@ -68,12 +68,12 @@ class RegisterActivity : AppCompatActivity() {
 
             Log.d("RegisterActivity", "Email: $email, Password: $password");
 
-            if(TextUtils.isEmpty(email)){
+            if (TextUtils.isEmpty(email)) {
                 Toast.makeText(this, "Enter an email", Toast.LENGTH_SHORT).show();
                 return@setOnClickListener;
             }
 
-            if(TextUtils.isEmpty(password)){
+            if (TextUtils.isEmpty(password)) {
                 Toast.makeText(this, "Enter a password", Toast.LENGTH_SHORT).show();
                 return@setOnClickListener;
             }
@@ -84,11 +84,13 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             if (password.length < 6) {
-                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
-            database = FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app");
+            database =
+                FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app");
             reference = database.getReference("users");
 
             auth.createUserWithEmailAndPassword(email, password)
@@ -109,11 +111,10 @@ class RegisterActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT,
                         ).show()
 
-                        val intent = Intent(applicationContext, LoginActivity::class.java);
+                        val intent = Intent(applicationContext, PetSelectionActivity::class.java);
                         startActivity(intent);
                         finish();
                     } else {
-                        // If sign in fails, display a message to the user.
                         Toast.makeText(
                             baseContext,
                             "Authentication failed.",
