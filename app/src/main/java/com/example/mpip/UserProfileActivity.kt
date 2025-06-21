@@ -6,6 +6,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -52,8 +53,10 @@ class UserProfileActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance();
         user = auth.currentUser;
+
         val button: Button = findViewById(R.id.logout);
         val textView: TextView = findViewById(R.id.user_details);
+        val friendsButton: ImageButton = findViewById(R.id.friends_btn);
 
         if(user == null){
             goToLogin();
@@ -68,8 +71,12 @@ class UserProfileActivity : AppCompatActivity() {
                     if (snapshot.exists()) {
                         val username = snapshot.child("username").getValue(String::class.java) ?: "N/A"
                         val email = snapshot.child("email").getValue(String::class.java) ?: "N/A"
+                        val latitude = snapshot.child("location").child("latitude").value ?: "N/A"
+                        val longitude = snapshot.child("location").child("longitude").value ?: "N/A"
+                        val id = user!!.uid
 
-                        textView.text = "Username: $username\nEmail: $email"
+                        textView.text = "Username: $username\nEmail: $email\nCode: $id"
+                        locationText.text = "Lat: ${latitude}, Lng: ${longitude}"
                     } else {
                         textView.text = "No user data found"
                     }
@@ -90,6 +97,11 @@ class UserProfileActivity : AppCompatActivity() {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
             checkPermissionAndStartUpdates()
+        }
+
+        friendsButton.setOnClickListener {
+            val intent = Intent(applicationContext, FriendListActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -117,8 +129,6 @@ class UserProfileActivity : AppCompatActivity() {
             @SuppressLint("SetTextI18n")
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
-                    locationText.text = "Lat: ${location.latitude}, Lng: ${location.longitude}"
-
                     if (lastSavedLocation == null || location.distanceTo(lastSavedLocation!!) >= 200) {
                         val database = FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app")
                         val reference = database.getReference("users").child(user!!.uid).child("location")
@@ -159,7 +169,9 @@ class UserProfileActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+        if (::fusedLocationClient.isInitialized && ::locationCallback.isInitialized) {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+        }
     }
 
     override fun onResume() {

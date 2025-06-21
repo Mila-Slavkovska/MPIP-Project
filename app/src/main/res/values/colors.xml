@@ -30,6 +30,7 @@
     <color name="nav_background">#FFFFFF</color>
     <color name="stats_background">#FFFFFF</color>
     <color name="pet_background">#F1F3F4</color>
+    <color name="background">#F5F5F5</color>
 
     <!-- Pet Selection Colors -->
     <color name="selected_pet_background">#E8F4FD</color>

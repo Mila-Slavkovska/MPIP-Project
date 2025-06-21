@@ -1,30 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserProfileActivity">
 
+    <ImageView
+        android:id="@+id/profile_image"
+        android:contentDescription="@string/user_profile_icon"
+        android:src="@drawable/baseline_face_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/user_details"
         android:text="@string/fetching_user_data"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/location"
-        android:text="Waiting fro location..."
+        android:text="Waiting for location..."
         android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_details"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/logout"
         android:text="@string/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="10dp"
+        android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/ai_btn"
+        android:contentDescription="@string/friends_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ai_icon"
+        android:background="@color/nav_background"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="30dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/friends_btn"
+        android:contentDescription="@string/friends_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/friends_icon"
+        android:background="@color/nav_background"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
