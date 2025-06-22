@@ -48,20 +48,20 @@ class FriendListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = FriendAdapter(emptyList()) { friend ->
-            Log.d("FriendListActivity", "${friend} was clicked")
-//            val intent = Intent(this, FriendLocationActivity::class.java)
-//            intent.putExtra("friendId", friend.id)
-//            startActivity(intent)
+            Log.d("FriendListActivity", "$friend was clicked")
+            val intent = Intent(this, FriendLocationActivity::class.java)
+            intent.putExtra("friendId", friend.id)
+            startActivity(intent)
         }
 
         recyclerView.adapter = adapter
 
         friendLiveData.observe(this) { updatedList ->
             adapter = FriendAdapter(updatedList) { friend ->
-                Log.d("FriendListActivity", "${friend} was clicked")
-//                val intent = Intent(this, FriendLocationActivity::class.java)
-//                intent.putExtra("friendId", friend.id)
-//                startActivity(intent)
+                Log.d("FriendListActivity", "$friend was clicked")
+                val intent = Intent(this, FriendLocationActivity::class.java)
+                intent.putExtra("friendId", friend.id)
+                startActivity(intent)
             }
             recyclerView.adapter = adapter
         }
