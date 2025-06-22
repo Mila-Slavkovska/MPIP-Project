@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mpip.adapters.FriendAdapter
 import com.example.mpip.domain.FriendClass
+import com.example.mpip.domain.ThoughtMessage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -47,16 +48,18 @@ class FriendListActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.friend_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        adapter = FriendAdapter(emptyList()) { friend ->
-            checkFriendLocationAndNavigate(friend.id)
-        }
+        adapter = FriendAdapter(emptyList(),
+            onViewLocationClick = { friend -> checkFriendLocationAndNavigate(friend.id) },
+            onSendThought = { friend -> showThoughtSelectionDialog(friend.id, friend.name) }
+        )
 
         recyclerView.adapter = adapter
 
         friendLiveData.observe(this) { updatedList ->
-            adapter = FriendAdapter(updatedList) { friend ->
-                checkFriendLocationAndNavigate(friend.id)
-            }
+            adapter = FriendAdapter(updatedList,
+                onViewLocationClick = { friend -> checkFriendLocationAndNavigate(friend.id) },
+                onSendThought = { friend -> showThoughtSelectionDialog(friend.id, friend.name) }
+            )
             recyclerView.adapter = adapter
         }
 
@@ -131,19 +134,11 @@ class FriendListActivity : AppCompatActivity() {
                     val userCheckRef = database.getReference("users/$friendUid")
                     userCheckRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(existingSnapshot: DataSnapshot) {
-                            val ref = database.getReference("users/$currentUserId/friends")
-
-                            if (existingSnapshot.exists()) {
-                                Toast.makeText(this@FriendListActivity, "Friend already added", Toast.LENGTH_SHORT).show()
-                            } else {
-                                ref.push().setValue(friendUid)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(this@FriendListActivity, "Friend added", Toast.LENGTH_SHORT).show()
-                                    }
-                                    .addOnFailureListener {
-                                        Toast.makeText(this@FriendListActivity, "Failed to add friend", Toast.LENGTH_SHORT).show()
-                                    }
+                            if (!existingSnapshot.exists()) {
+                                Toast.makeText(this@FriendListActivity, "User with this UID does not exist", Toast.LENGTH_SHORT).show()
+                                return
                             }
+                            addFriendMutually(currentUserId, friendUid)
                         }
 
                         override fun onCancelled(error: DatabaseError) {
@@ -157,4 +152,95 @@ class FriendListActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .show()
     }
+
+    private fun addFriendMutually(currentUserId: String, friendUid: String) {
+        val currentUserFriendsRef = database.getReference("users/$currentUserId/friends")
+        val friendFriendsRef = database.getReference("users/$friendUid/friends")
+
+        currentUserFriendsRef.orderByValue().equalTo(friendUid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(currentSnapshot: DataSnapshot) {
+                    if (currentSnapshot.exists()) {
+                        Toast.makeText(this@FriendListActivity, "Friend already added", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    friendFriendsRef.orderByValue().equalTo(currentUserId)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(friendSnapshot: DataSnapshot) {
+                                if (friendSnapshot.exists()) {
+                                    Toast.makeText(this@FriendListActivity, "Friend already added", Toast.LENGTH_SHORT).show()
+                                    return
+                                }
+
+                                val updates = hashMapOf<String, Any>(
+                                    "/users/$currentUserId/friends/${currentUserFriendsRef.push().key}" to friendUid,
+                                    "/users/$friendUid/friends/${friendFriendsRef.push().key}" to currentUserId
+                                )
+
+                                database.reference.updateChildren(updates)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this@FriendListActivity, "Friend added successfully", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener {
+                                        Toast.makeText(this@FriendListActivity, "Failed to add friend", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText(this@FriendListActivity, "Database error", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@FriendListActivity, "Database error", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+
+    private fun showThoughtSelectionDialog(friendId: String, friendName: String) {
+        val thoughts = listOf(
+            "Good morning", "Good evening", "Sending you hugs",
+            "I've got your back", "I believe in you", "Drink some water", "Be kind to yourself"
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle("Send a Thought to $friendName")
+            .setItems(thoughts.toTypedArray()) { _, which ->
+                val selected = thoughts[which]
+                sendThoughtToFriend(friendId, selected)
+            }
+            .show()
+    }
+
+    private fun sendThoughtToFriend(friendId: String, message: String) {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val database = FirebaseDatabase.getInstance()
+
+        val refName = database.getReference("users/$currentUserId/username")
+
+        refName.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val username = snapshot.getValue(String::class.java) ?: "Someone"
+
+                val msg = ThoughtMessage(
+                    senderId = currentUserId,
+                    senderName = username,
+                    message = message,
+                    timestamp = System.currentTimeMillis(),
+                    seen = false
+                )
+
+                val messageRef = database.getReference("messages").child(friendId).push()
+                messageRef.setValue(msg)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("FriendListActivity", "Error sending message")
+            }
+        })
+    }
+
 }

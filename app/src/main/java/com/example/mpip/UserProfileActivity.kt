@@ -57,6 +57,7 @@ class UserProfileActivity : AppCompatActivity() {
         val button: Button = findViewById(R.id.logout);
         val textView: TextView = findViewById(R.id.user_details);
         val friendsButton: ImageButton = findViewById(R.id.friends_btn);
+        val mailboxButton: Button = findViewById(R.id.mailbox);
 
         if(user == null){
             goToLogin();
@@ -101,6 +102,11 @@ class UserProfileActivity : AppCompatActivity() {
 
         friendsButton.setOnClickListener {
             val intent = Intent(applicationContext, FriendListActivity::class.java)
+            startActivity(intent)
+        }
+
+        mailboxButton.setOnClickListener {
+            val intent = Intent(applicationContext, MailboxActivity::class.java)
             startActivity(intent)
         }
     }
