@@ -48,26 +48,48 @@ class FriendListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = FriendAdapter(emptyList()) { friend ->
-            Log.d("FriendListActivity", "$friend was clicked")
-            val intent = Intent(this, FriendLocationActivity::class.java)
-            intent.putExtra("friendId", friend.id)
-            startActivity(intent)
+            checkFriendLocationAndNavigate(friend.id)
         }
 
         recyclerView.adapter = adapter
 
         friendLiveData.observe(this) { updatedList ->
             adapter = FriendAdapter(updatedList) { friend ->
-                Log.d("FriendListActivity", "$friend was clicked")
-                val intent = Intent(this, FriendLocationActivity::class.java)
-                intent.putExtra("friendId", friend.id)
-                startActivity(intent)
+                checkFriendLocationAndNavigate(friend.id)
             }
             recyclerView.adapter = adapter
         }
 
         loadFriends()
     }
+
+    private fun checkFriendLocationAndNavigate(friendId: String) {
+        val locationRef = database.getReference("users/$friendId/location")
+
+        locationRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val lat = snapshot.child("latitude").getValue(Double::class.java)
+                val lon = snapshot.child("longitude").getValue(Double::class.java)
+
+                if (snapshot.exists() && lat != null && lon != null) {
+                    val intent = Intent(this@FriendListActivity, FriendLocationActivity::class.java)
+                    intent.putExtra("friendId", friendId)
+                    startActivity(intent)
+                } else {
+                    AlertDialog.Builder(this@FriendListActivity)
+                        .setTitle("Location Unavailable")
+                        .setMessage("This friend hasn't shared their location.")
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@FriendListActivity, "Failed to check location", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     private fun loadFriends() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
