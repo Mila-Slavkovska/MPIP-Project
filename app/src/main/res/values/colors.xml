@@ -73,4 +73,31 @@
     <color name="transparent">#00000000</color>
     <color name="semi_transparent_black">#80000000</color>
     <color name="semi_transparent_white">#80FFFFFF</color>
+
+    <color name="text_primary">#2D3436</color>
+    <color name="text_secondary">#636E72</color>
+    <color name="accent_purple">#6C63FF</color>
+    <color name="accent_green">#00B894</color>
+    <color name="background_light">#F5F5F5</color>
+
+    <!-- Calendar specific colors -->
+    <color name="calendar_active_text">#FFFFFF</color>
+    <color name="calendar_current_month_text">#2D3436</color>
+    <color name="calendar_other_month_text">#B2BEC3</color>
+
+    <!-- Calendar background colors -->
+    <color name="calendar_today_bg">#E17055</color>
+    <color name="calendar_active_bg">#6C63FF</color>
+    <color name="calendar_normal_bg">#FFFFFF</color>
+    <color name="calendar_other_month_bg">#F8F9FA</color>
+
+    <!-- Calendar accent colors -->
+    <color name="calendar_streak_color">#E17055</color>
+    <color name="calendar_points_high">#00B894</color>
+    <color name="calendar_points_medium">#FDCB6E</color>
+    <color name="calendar_points_low">#74B9FF</color>
+
+    <!-- Calendar states -->
+    <color name="calendar_selected_bg">#E8E6FF</color>
+    <color name="calendar_pressed_bg">#E9ECEF</color>
 </resources>
