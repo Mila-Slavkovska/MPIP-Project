@@ -247,7 +247,8 @@ class FriendListActivity : AppCompatActivity() {
                     message = message,
                     timestamp = System.currentTimeMillis(),
                     notified = false,
-                    opened = false
+                    opened = false,
+                    key = null
                 )
 
                 val messageRef = database.getReference("messages").child(friendId).push()

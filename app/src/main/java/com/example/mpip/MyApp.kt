@@ -32,6 +32,21 @@ class MyApp : Application() {
             .getReference("messages")
             .child(userId)
 
+        dbRef.orderByChild("notified").equalTo(false)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (child in snapshot.children) {
+                        val thought = child.getValue(ThoughtMessage::class.java) ?: continue
+                        showLocalNotification(thought, context)
+                        child.ref.child("notified").setValue(true)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("MyApp", "Failed to fetch old messages: ${error.message}")
+                }
+            })
+
         dbRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 Log.d("MyApp", "New thought received: ${snapshot.value}")
@@ -92,7 +107,8 @@ class MyApp : Application() {
                     message = message,
                     timestamp = System.currentTimeMillis(),
                     notified = false,
-                    opened = false
+                    opened = false,
+                    key = null
                 )
                 val messageRef = database.getReference("messages").child(friendId).push()
                 messageRef.setValue(msg)
