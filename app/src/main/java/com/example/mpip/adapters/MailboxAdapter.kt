@@ -13,20 +13,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.mpip.R
 
-class MailboxAdapter : ListAdapter<ThoughtMessage, MailboxAdapter.MailboxViewHolder>(DiffCallback()) {
+class MailboxAdapter(private val onItemClicked: (ThoughtMessage) -> Unit)
+    : ListAdapter<ThoughtMessage, MailboxAdapter.MailboxViewHolder>(DiffCallback()) {
 
     inner class MailboxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val senderNameText: TextView = itemView.findViewById(R.id.senderName)
         private val messageText: TextView = itemView.findViewById(R.id.messageText)
         private val timestampText: TextView = itemView.findViewById(R.id.timestampText)
+        private val newBadge: TextView = itemView.findViewById(R.id.newBadge)
 
         fun bind(message: ThoughtMessage) {
             senderNameText.text = message.senderName
             messageText.text = message.message
-
+            newBadge.visibility = if (message.opened) View.GONE else View.VISIBLE
             val sdf = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
             val dateString = sdf.format(Date(message.timestamp))
             timestampText.text = dateString
+            itemView.setOnClickListener {
+                onItemClicked(message)
+            }
         }
     }
 

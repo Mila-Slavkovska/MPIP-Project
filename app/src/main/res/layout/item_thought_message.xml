@@ -10,38 +10,60 @@
     card_view:cardCornerRadius="12dp"
     card_view:cardBackgroundColor="@color/white">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/senderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sender_name"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/messageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thought_message_here"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/timestampText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timestamp"
+                android:textSize="12sp"
+                android:textColor="#888888"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/senderName"
+            android:id="@+id/newBadge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sender_name"
+            android:text="New!"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/messageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/thought_message_here"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/timestampText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/timestamp"
             android:textSize="12sp"
-            android:textColor="#888888"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:background="@drawable/badge_background"
+            android:layout_gravity="top|end"
+            android:visibility="gone"
+            android:layout_margin="8dp" />
+
+    </FrameLayout>
 
 </androidx.cardview.widget.CardView>

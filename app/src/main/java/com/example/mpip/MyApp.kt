@@ -15,6 +15,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class MyApp : Application() {
     override fun onCreate() {
@@ -35,7 +36,11 @@ class MyApp : Application() {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 Log.d("MyApp", "New thought received: ${snapshot.value}")
                 val thought = snapshot.getValue(ThoughtMessage::class.java) ?: return
-                showLocalNotification(thought, context)
+
+                if (!thought.notified) {
+                    showLocalNotification(thought, context)
+                    snapshot.ref.child("notified").setValue(true)
+                }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -71,5 +76,31 @@ class MyApp : Application() {
             .build()
 
         manager.notify(System.currentTimeMillis().toInt(), notification)
+    }
+
+    fun sendThoughtToFriend(friendId: String, message: String) {
+        val currentUser = FirebaseAuth.getInstance().currentUser ?: return
+        val database = FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app")
+
+        val refName = database.getReference("users/${currentUser.uid}/username")
+        refName.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val username = snapshot.getValue(String::class.java) ?: "Someone"
+                val msg = ThoughtMessage(
+                    senderId = currentUser.uid,
+                    senderName = username,
+                    message = message,
+                    timestamp = System.currentTimeMillis(),
+                    notified = false,
+                    opened = false
+                )
+                val messageRef = database.getReference("messages").child(friendId).push()
+                messageRef.setValue(msg)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("MyApp", "Failed to send message: ${error.message}")
+            }
+        })
     }
 }

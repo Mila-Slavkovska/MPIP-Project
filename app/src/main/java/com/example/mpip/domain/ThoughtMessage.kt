@@ -5,6 +5,8 @@ data class ThoughtMessage(
     val senderName: String = "",
     val message: String = "",
     val timestamp: Long = System.currentTimeMillis(),
-    val seen: Boolean = false
+    val notified: Boolean = false,
+    val opened: Boolean = false,
+    var key: String? = null
 )
 
