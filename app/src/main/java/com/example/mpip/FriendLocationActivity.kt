@@ -122,8 +122,7 @@ class FriendLocationActivity : AppCompatActivity() {
             .setTitle("Send Good Thoughts?")
             .setMessage("Do you want to send good thoughts to this friend?")
             .setPositiveButton("Yes") { _, _ ->
-                //TODO: Create SendThoughtsActivity
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, FriendListActivity::class.java)
                 intent.putExtra("friendId", friendId)
                 startActivity(intent)
             }

@@ -15,6 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mpip.adapters.FriendAdapter
+import com.example.mpip.adapters.ThoughtsAdapter
 import com.example.mpip.domain.FriendClass
 import com.example.mpip.domain.ThoughtMessage
 import com.google.firebase.auth.FirebaseAuth
@@ -202,17 +203,33 @@ class FriendListActivity : AppCompatActivity() {
 
     private fun showThoughtSelectionDialog(friendId: String, friendName: String) {
         val thoughts = listOf(
-            "Good morning", "Good evening", "Sending you hugs",
-            "I've got your back", "I believe in you", "Drink some water", "Be kind to yourself"
+            "🌞 Good morning",
+            "🌙 Good evening",
+            "🤗 Sending you hugs",
+            "💪 I've got your back",
+            "🌟 I believe in you",
+            "💧 Drink some water",
+            "💖 Be kind to yourself"
         )
 
-        AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_thoughts, null)
+        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.thoughtsRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        lateinit var alertDialog: AlertDialog
+
+        val adapter = ThoughtsAdapter(thoughts) { selectedThought ->
+            sendThoughtToFriend(friendId, selectedThought)
+            alertDialog.dismiss()
+        }
+        recyclerView.adapter = adapter
+
+        val builder = AlertDialog.Builder(this)
             .setTitle("Send a Thought to $friendName")
-            .setItems(thoughts.toTypedArray()) { _, which ->
-                val selected = thoughts[which]
-                sendThoughtToFriend(friendId, selected)
-            }
-            .show()
+            .setView(dialogView)
+
+        alertDialog = builder.create()
+        alertDialog.show()
     }
 
     private fun sendThoughtToFriend(friendId: String, message: String) {

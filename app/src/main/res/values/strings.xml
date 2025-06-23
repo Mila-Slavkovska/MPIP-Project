@@ -22,4 +22,5 @@
     <string name="timestamp">Timestamp</string>
     <string name="thought_message_here">Thought message here</string>
     <string name="sender_name">Sender Name</string>
+    <string name="send_a_thought">Make your friend\'s day!</string>
 </resources>
