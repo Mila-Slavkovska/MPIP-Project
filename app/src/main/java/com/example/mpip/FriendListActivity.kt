@@ -217,7 +217,6 @@ class FriendListActivity : AppCompatActivity() {
 
     private fun sendThoughtToFriend(friendId: String, message: String) {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val database = FirebaseDatabase.getInstance()
 
         val refName = database.getReference("users/$currentUserId/username")
 

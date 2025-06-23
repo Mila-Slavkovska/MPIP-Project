@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -93,6 +94,12 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("MainActivityFlow", "User authenticated: ${currentUser.email}")
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+            }
+        }
+
         //checkAndInitializeFirebaseData()
 
         enableEdgeToEdge()
@@ -135,7 +142,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d("MainActivityFlow", "=== MainActivity setup complete ===")
-        observeMessages()
     }
 
     private fun initializeViews() {
@@ -1010,51 +1016,4 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivityFlow", "Animation failed", e)
         }
     }
-
-    private fun observeMessages() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val ref = FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app").getReference("messages/$userId")
-
-        ref.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val message = snapshot.getValue(ThoughtMessage::class.java) ?: return
-                showLocalNotification(message)
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    private fun showLocalNotification(message: ThoughtMessage) {
-        val channelId = "thoughts_channel"
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, "Thoughts", NotificationManager.IMPORTANCE_DEFAULT)
-            manager.createNotificationChannel(channel)
-        }
-
-        val intent = Intent(this, MailboxActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        }
-
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_notification) // make sure you have this drawable
-            .setContentTitle("You've received a thought!")
-            .setContentText(message.message)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        manager.notify(System.currentTimeMillis().toInt(), notification)
-    }
-
 }

@@ -18,4 +18,8 @@
     <string name="add_friend">Add Friend</string>
     <string name="enter_friend_s_uid">Enter friend\'s UID</string>
     <string name="friends">Friends</string>
+    <string name="your_mailbox">Your Mailbox</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="thought_message_here">Thought message here</string>
+    <string name="sender_name">Sender Name</string>
 </resources>
