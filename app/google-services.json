@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "762746105202",
+    "firebase_url": "https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "mpip-project-ea779",
     "storage_bucket": "mpip-project-ea779.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.mpip"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "762746105202-1maq6l5kgqgg7p2u65or41gjj1s69nrf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mpip",
+            "certificate_hash": "0182b7ececa399f248fed6e595484d50d392010f"
+          }
+        },
+        {
+          "client_id": "762746105202-sb9qucmudvhicdptvdsj1n5c60q74ngp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAmeJhMKDxRmGkCrIi0-SV6I92s7cR4vUs"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762746105202-sb9qucmudvhicdptvdsj1n5c60q74ngp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -5,10 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="30dp"
     android:background="@color/lavender"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="30dp"
     tools:context=".RegisterActivity">
 
     <androidx.cardview.widget.CardView
@@ -16,96 +16,109 @@
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         app:cardCornerRadius="30dp"
-        app:cardElevation="20dp" >
+        app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
             android:padding="24dp">
 
             <TextView
-                android:text="@string/register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="@string/register"
                 android:textColor="@color/accessible_lavender"
                 android:textSize="36sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_google_signin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_register"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/accessible_lavender"
+                android:text="Sign up with Google"
+                android:textColor="@android:color/white" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username"
-                    android:hint="@string/username"
-                    android:textColorHint="@color/purple_500"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
                     android:drawableStart="@drawable/baseline_self_improvement_24"
                     android:drawablePadding="8dp"
-                    android:padding="12dp"/>
+                    android:hint="@string/username"
+                    android:minHeight="48dp"
+                    android:padding="12dp"
+                    android:textColorHint="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email"
-                    android:hint="@string/email"
-                    android:textColorHint="@color/purple_500"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
                     android:drawableStart="@drawable/baseline_email_24"
                     android:drawablePadding="8dp"
-                    android:padding="12dp"/>
+                    android:hint="@string/email"
+                    android:minHeight="48dp"
+                    android:padding="12dp"
+                    android:textColorHint="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password"
-                    android:hint="@string/password"
-                    android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
                     android:drawableStart="@drawable/android_lock"
                     android:drawablePadding="8dp"
-                    android:padding="12dp"/>
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:padding="12dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ProgressBar
                 android:id="@+id/progress_bar"
-                android:visibility="gone"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_register"
-                android:layout_marginTop="10dp"
-                android:text="@string/register"
-                android:textColor="@color/white"
-                android:background="@color/accessible_lavender"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@color/accessible_lavender"
+                android:text="@string/register"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/login_now"
-                android:text="@string/click_to_login"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:textColor="@color/accessible_lavender"
-                android:padding="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/click_to_login"
+                android:textColor="@color/accessible_lavender"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database)
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("org.osmdroid:osmdroid-android:6.1.16")
     implementation(libs.protolite.well.known.types)
     testImplementation(libs.junit)
