@@ -1,7 +1,13 @@
 package com.example.mpip
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,15 +21,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.mpip.domain.ThoughtMessage
 import com.example.mpip.domain.UserProgress
 import com.example.mpip.domain.enums.PetActionType
 import com.example.mpip.domain.mentalHealthTips.MentalHealthTip
 import com.example.mpip.repository.Repository
 import com.example.mpip.service.TaskGenerationService
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -81,6 +93,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d("MainActivityFlow", "User authenticated: ${currentUser.email}")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+            }
+        }
 
         //checkAndInitializeFirebaseData()
 

@@ -12,7 +12,8 @@ import com.example.mpip.domain.FriendClass
 
 class FriendAdapter(
     private val friends: List<FriendClass>,
-    private val onViewLocationClick: (FriendClass) -> Unit
+    private val onViewLocationClick: (FriendClass) -> Unit,
+    private val onSendThought: (FriendClass) -> Unit
 ): RecyclerView.Adapter<FriendAdapter.FriendViewHolder>() {
 
     inner class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,7 +25,7 @@ class FriendAdapter(
         fun bind(friend: FriendClass) {
             nameText.text = friend.name
             viewOnMapButton.setOnClickListener { onViewLocationClick(friend) }
-            //TODO:sendThoughtsButton
+            sendThoughtsButton.setOnClickListener { onSendThought(friend) }
         }
     }
 
