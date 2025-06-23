@@ -15,6 +15,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class PetSelectionActivity : AppCompatActivity() {
     private lateinit var sharedPrefs: SharedPreferences
@@ -159,6 +160,30 @@ class PetSelectionActivity : AppCompatActivity() {
             apply()
         }
 
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val database =
+                FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app")
+            val petData = mapOf(
+                "petType" to petType,
+                "petName" to petName,
+                "happiness" to 100,
+                "energy" to 100,
+                "level" to 1,
+                "creationTime" to System.currentTimeMillis(),
+                "petSelected" to true
+            )
+
+            database.getReference("users").child(currentUser.uid).child("pet")
+                .setValue(petData)
+                .addOnSuccessListener {
+                    Log.d("PetSelectionFlow", "Pet data saved to Firebase")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("PetSelectionFlow", "Failed to save pet to Firebase", e)
+                }
+        }
+
         Log.d("PetSelectionFlow", "Pet data saved successfully")
 
         val petDisplayName = when (petType) {
@@ -175,7 +200,7 @@ class PetSelectionActivity : AppCompatActivity() {
 
         Log.d("PetSelectionFlow", "Navigating to MainActivity")
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("new_pet_created", true) // Flag to show welcome message
+        intent.putExtra("new_pet_created", true)
         startActivity(intent)
         finish()
     }

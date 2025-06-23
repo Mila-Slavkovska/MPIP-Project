@@ -1,9 +1,5 @@
 package com.example.mpip
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -21,21 +17,19 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.mpip.domain.ThoughtMessage
 import com.example.mpip.domain.UserProgress
 import com.example.mpip.domain.enums.PetActionType
 import com.example.mpip.domain.mentalHealthTips.MentalHealthTip
 import com.example.mpip.repository.Repository
 import com.example.mpip.service.TaskGenerationService
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -114,9 +108,6 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs = getSharedPreferences(userSpecificKey, MODE_PRIVATE)
         Log.d("MainActivityFlow", "Using preferences: $userSpecificKey")
 
-        val hasPet = sharedPrefs.getBoolean("pet_selected", false)
-        Log.d("MainActivityFlow", "User has pet: $hasPet")
-
         initializeViews()
         repository = Repository()
         taskService = TaskGenerationService(repository)
@@ -124,8 +115,143 @@ class MainActivity : AppCompatActivity() {
         checkDailyCheckInStatus()
         initializeDailyTasksAndStatus()
         setupClickListeners()
-        setupTaskMenu() // ADD THIS LINE
+        setupTaskMenu()
         loadTodaysMentalHealthTip()
+        checkUserHasPet()
+
+        Log.d("MainActivityFlow", "=== MainActivity setup complete ===")
+    }
+
+    private fun updatePetStats(
+        happinessChange: Int = 0,
+        energyChange: Int = 0,
+        levelChange: Int = 0
+    ) {
+        val currentUser = auth.currentUser ?: return
+
+        val database =
+            FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app")
+        val petRef = database.getReference("users").child(currentUser.uid).child("pet")
+
+        // First, get current values from Firebase
+        petRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    val currentHappiness =
+                        snapshot.child("happiness").getValue(Int::class.java) ?: 100
+                    val currentEnergy = snapshot.child("energy").getValue(Int::class.java) ?: 100
+                    val currentLevel = snapshot.child("level").getValue(Int::class.java) ?: 1
+
+                    val newHappiness = minOf(100, maxOf(0, currentHappiness + happinessChange))
+                    val newEnergy = minOf(100, maxOf(0, currentEnergy + energyChange))
+                    val newLevel = maxOf(1, currentLevel + levelChange)
+
+                    val updates = mapOf(
+                        "happiness" to newHappiness,
+                        "energy" to newEnergy,
+                        "level" to newLevel,
+                        "lastUpdated" to System.currentTimeMillis()
+                    )
+
+                    petRef.updateChildren(updates)
+                        .addOnSuccessListener {
+                            with(sharedPrefs.edit()) {
+                                putInt("pet_happiness", newHappiness)
+                                putInt("pet_energy", newEnergy)
+                                putInt("pet_level", newLevel)
+                                apply()
+                            }
+
+                            happinessBar.progress = newHappiness
+                            energyBar.progress = newEnergy
+                            happinessText.text = "$newHappiness%"
+                            energyText.text = "$newEnergy%"
+                            levelText.text = "Level $newLevel"
+
+                            Log.d(
+                                "MainActivityFlow",
+                                "Pet stats updated: H:$newHappiness E:$newEnergy L:$newLevel"
+                            )
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("MainActivityFlow", "Failed to update pet stats", e)
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Failed to sync pet data",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                } catch (e: Exception) {
+                    Log.e("MainActivityFlow", "Error processing pet stats update", e)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(
+                    "MainActivityFlow",
+                    "Failed to read pet stats from Firebase",
+                    error.toException()
+                )
+            }
+        })
+    }
+
+    private fun checkUserHasPet() {
+        val currentUser = auth.currentUser ?: return
+
+        val database =
+            FirebaseDatabase.getInstance("https://mpip-project-ea779-default-rtdb.europe-west1.firebasedatabase.app")
+        database.getReference("users").child(currentUser.uid).child("pet")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        Log.d("MainActivityFlow", "Pet found in Firebase, syncing to device")
+
+                        val petType =
+                            snapshot.child("petType").getValue(String::class.java) ?: "cat"
+                        val petName =
+                            snapshot.child("petName").getValue(String::class.java) ?: "Pet"
+                        val happiness = snapshot.child("happiness").getValue(Int::class.java) ?: 100
+                        val energy = snapshot.child("energy").getValue(Int::class.java) ?: 100
+                        val level = snapshot.child("level").getValue(Int::class.java) ?: 1
+                        val creationTime = snapshot.child("creationTime").getValue(Long::class.java)
+                            ?: System.currentTimeMillis()
+
+                        with(sharedPrefs.edit()) {
+                            putString("selected_pet_type", petType)
+                            putString("pet_name", petName)
+                            putBoolean("pet_selected", true)
+                            putInt("pet_happiness", happiness)
+                            putInt("pet_energy", energy)
+                            putInt("pet_level", level)
+                            putLong("creation_time", creationTime)
+                            apply()
+                        }
+
+                        continueWithPetFlow(true)
+
+                    } else {
+                        Log.d("MainActivityFlow", "No pet in Firebase, checking local storage")
+                        val localHasPet = sharedPrefs.getBoolean("pet_selected", false)
+                        continueWithPetFlow(localHasPet)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(
+                        "MainActivityFlow",
+                        "Firebase check failed, using local storage",
+                        error.toException()
+                    )
+                    val localHasPet = sharedPrefs.getBoolean("pet_selected", false)
+                    continueWithPetFlow(localHasPet)
+                }
+            })
+    }
+
+    private fun continueWithPetFlow(hasPet: Boolean) {
+        Log.d("MainActivityFlow", "User has pet: $hasPet")
 
         if (hasPet) {
             Log.d("MainActivityFlow", "Loading existing pet data")
@@ -140,8 +266,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivityFlow", "No pet found - redirecting to pet selection")
             redirectToPetSelection()
         }
-
-        Log.d("MainActivityFlow", "=== MainActivity setup complete ===")
     }
 
     private fun initializeViews() {
