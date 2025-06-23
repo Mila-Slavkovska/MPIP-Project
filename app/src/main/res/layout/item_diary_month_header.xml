@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="16dp"
+    android:background="#F8F9FA">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📅"
+        android:textSize="16sp"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/month_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="January 2025"
+        android:textColor="#2D3436"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/entry_count_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 entries"
+        android:textColor="#636E72"
+        android:textSize="12sp" />
+
+</LinearLayout>

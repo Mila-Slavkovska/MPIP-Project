@@ -1,10 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_300">#8839FD</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="lavender">#8692f7</color>
+    <color name="accessible_lavender">#8854D0</color>
+
+    <color name="primary_color">#6C63FF</color>
+    <color name="primary_color_dark">#5A52E8</color>
+    <color name="secondary_color">#FF6B6B</color>
+    <color name="accent_color">#4ECDC4</color>
+
+    <!-- Text Colors -->
+    <color name="primary_text">#2D3436</color>
+    <color name="secondary_text">#636E72</color>
+    <color name="text_hint">#B2BEC3</color>
+    <color name="text_white">#FFFFFF</color>
+
+    <!-- Background Colors -->
+    <color name="background_start">#F8F9FA</color>
+    <color name="background_end">#E9ECEF</color>
+    <color name="pet_selection_bg_start">#667EEA</color>
+    <color name="pet_selection_bg_end">#764BA2</color>
+    <color name="nav_background">#FFFFFF</color>
+    <color name="stats_background">#FFFFFF</color>
+    <color name="pet_background">#F1F3F4</color>
+    <color name="background">#F5F5F5</color>
+
+    <!-- Pet Selection Colors -->
+    <color name="selected_pet_background">#E8F4FD</color>
+    <color name="unselected_pet_background">#FFFFFF</color>
+    <color name="border_color">#DDD6FE</color>
+
+    <!-- Button Colors -->
+    <color name="button_background">#F8F9FA</color>
+    <color name="disabled_button_color">#BDC3C7</color>
+    <color name="feed_button_color">#E17055</color>
+    <color name="play_button_color">#0984E3</color>
+    <color name="care_button_color">#00B894</color>
+
+    <!-- Pet Status Colors -->
+    <color name="happiness_color">#E84393</color>
+    <color name="energy_color">#FDCB6E</color>
+    <color name="experience_color">#6C5CE7</color>
+    <color name="points_color">#F39C12</color>
+    <color name="streak_color">#E74C3C</color>
+
+    <!-- System Colors -->
+    <color name="success_color">#00B894</color>
+    <color name="warning_color">#FDCB6E</color>
+    <color name="error_color">#E74C3C</color>
+    <color name="info_color">#74B9FF</color>
+    <color name="icon_color">#636E72</color>
+
+    <!-- Mood State Colors -->
+    <color name="mood_happy">#00B894</color>
+    <color name="mood_neutral">#FDCB6E</color>
+    <color name="mood_sad">#FD79A8</color>
+    <color name="mood_very_sad">#E84393</color>
+
+    <!-- Energy State Colors -->
+    <color name="energy_high">#00B894</color>
+    <color name="energy_medium">#FDCB6E</color>
+    <color name="energy_low">#E17055</color>
+    <color name="energy_critical">#E74C3C</color>
+
+    <!-- Transparent Colors -->
+    <color name="transparent">#00000000</color>
+    <color name="semi_transparent_black">#80000000</color>
+    <color name="semi_transparent_white">#80FFFFFF</color>
+
+    <color name="text_primary">#2D3436</color>
+    <color name="text_secondary">#636E72</color>
+    <color name="accent_purple">#6C63FF</color>
+    <color name="accent_green">#00B894</color>
+    <color name="background_light">#F5F5F5</color>
+
+    <!-- Calendar specific colors -->
+    <color name="calendar_active_text">#FFFFFF</color>
+    <color name="calendar_current_month_text">#2D3436</color>
+    <color name="calendar_other_month_text">#B2BEC3</color>
+
+    <!-- Calendar background colors -->
+    <color name="calendar_today_bg">#E17055</color>
+    <color name="calendar_active_bg">#6C63FF</color>
+    <color name="calendar_normal_bg">#FFFFFF</color>
+    <color name="calendar_other_month_bg">#F8F9FA</color>
+
+    <!-- Calendar accent colors -->
+    <color name="calendar_streak_color">#E17055</color>
+    <color name="calendar_points_high">#00B894</color>
+    <color name="calendar_points_medium">#FDCB6E</color>
+    <color name="calendar_points_low">#74B9FF</color>
+
+    <!-- Calendar states -->
+    <color name="calendar_selected_bg">#E8E6FF</color>
+    <color name="calendar_pressed_bg">#E9ECEF</color>
 </resources>

@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">MPIP</string>
+    <string name="title_activity_login">Login</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="click_to_login">Already a user? Login.</string>
+    <string name="click_to_register">Click to register</string>
+    <string name="logout">Logout</string>
+    <string name="username">Username</string>
+    <string name="fetching_user_data">Fetching user data...</string>
+    <string name="user_profile">User Profile</string>
+    <string name="title_activity_pet_selection">PetSelectionActivity</string>
+    <string name="user_profile_icon">User profile icon</string>
+    <string name="friends_icon">Friends icon</string>
+    <string name="view_on_map">View on Map</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="enter_friend_s_uid">Enter friend\'s UID</string>
+    <string name="friends">Friends</string>
+    <string name="your_mailbox">Your Mailbox</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="thought_message_here">Thought message here</string>
+    <string name="sender_name">Sender Name</string>
+    <string name="send_a_thought">Make your friend\'s day!</string>
 </resources>
