@@ -23,7 +23,7 @@ class OpenAIService {
         private const val TEMPERATURE = 1.0f
 
         private const val API_KEY =
-            "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"
+            "YOUR_API_KEY"
     }
 
     suspend fun generateMentalHealthTip(request: TipGenerationRequest): MentalHealthTip? {
