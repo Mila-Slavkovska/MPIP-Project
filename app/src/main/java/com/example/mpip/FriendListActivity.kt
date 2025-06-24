@@ -253,10 +253,12 @@ class FriendListActivity : AppCompatActivity() {
 
                 val messageRef = database.getReference("messages").child(friendId).push()
                 messageRef.setValue(msg)
+                Toast.makeText(this@FriendListActivity, "Thought sent!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("FriendListActivity", "Error sending message")
+                Toast.makeText(this@FriendListActivity, "Failed to send thought!", Toast.LENGTH_SHORT).show()
             }
         })
     }

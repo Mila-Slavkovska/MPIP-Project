@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -87,6 +88,7 @@ class MailboxActivity : AppCompatActivity() {
         builder.setPositiveButton("Send Good Thought Back") { dialog, _ ->
             val myApp = application as MyApp
             myApp.sendThoughtToFriend(message.senderId, "Sending you a good thought! 😊")
+            Toast.makeText(this, "Thought sent!", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 

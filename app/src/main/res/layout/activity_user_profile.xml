@@ -94,16 +94,18 @@
         android:padding="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/ai_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/location_view">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="309dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
 
             <!-- Header -->
             <TextView
@@ -112,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:text="Your Stats"
-                android:textSize="18sp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
             <!-- Level on top -->
@@ -136,25 +138,33 @@
                     android:id="@+id/current_streak_text"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingEnd="8dp"
+                    android:background="@drawable/badge_background"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/purple_700"
+                    android:padding="8dp"
+                    android:layout_marginEnd="2dp"
                     android:text="Current Streak: 4 days" />
 
                 <TextView
                     android:id="@+id/longest_streak_text"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingStart="8dp"
+                    android:background="@drawable/badge_background"
+                    android:backgroundTint="@color/lavender"
+                    android:padding="8dp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="2dp"
                     android:text="Longest Streak: 9 days" />
             </LinearLayout>
 
             <!-- Row for tasks, points, questionnaires -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="110dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -162,32 +172,52 @@
                     android:id="@+id/tasks_text"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingEnd="8dp"
+                    android:background="@drawable/badge_background"
+                    android:backgroundTint="@color/energy_medium"
+                    android:textColor="@color/white"
+                    android:padding="8dp"
+                    android:layout_marginEnd="2dp"
                     android:text="Tasks Completed: 42" />
 
                 <TextView
                     android:id="@+id/total_points_text"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
+                    android:background="@drawable/badge_background"
+                    android:textColor="@color/white"
+                    android:padding="8dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
                     android:text="Total Points: 1200" />
 
                 <TextView
                     android:id="@+id/available_text"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/badge_background"
+                    android:backgroundTint="@color/accent_green"
+                    android:textColor="@color/white"
                     android:layout_weight="1"
-                    android:paddingStart="8dp"
+                    android:padding="8dp"
+                    android:layout_marginStart="2dp"
                     android:text="Available points: 8" />
             </LinearLayout>
 
             <!-- Last active at bottom -->
+            <View
+                android:layout_width="304dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="1dp"
+                android:background="#CCCCCC"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/level_text" />
             <TextView
                 android:id="@+id/last_active_text"
                 style="@style/TextAppearance.MaterialComponents.Body1"
@@ -229,26 +259,26 @@
         android:id="@+id/friends_btn"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="25dp"
         android:background="@color/nav_background"
-        android:src="@drawable/friends_icon"
         android:contentDescription="Friends"
         android:scaleType="centerInside"
+        android:src="@drawable/friends_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
-        android:id="@+id/ai_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="16dp"
-        android:background="@color/nav_background"
-        android:src="@drawable/ai_icon"
-        android:contentDescription="AI"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!--    <ImageButton-->
+<!--        android:id="@+id/ai_btn"-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:layout_marginStart="24dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:background="@color/nav_background"-->
+<!--        android:src="@drawable/ai_icon"-->
+<!--        android:contentDescription="AI"-->
+<!--        android:scaleType="centerInside"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
